@@ -70,6 +70,39 @@ namespace VendaProduto.Classes
 
             return produtos;
         }
+        public int InsereProduto()
+        {
+            List<MySqlParameter> parametros = new List<MySqlParameter>();
+
+            parametros.Add(new MySqlParameter("NomeProduto", NomeProduto));
+            parametros.Add(new MySqlParameter("PrecoUnit", PrecoUnit));
+            parametros.Add(new MySqlParameter("QntEstocada", QtdEstocada));
+            parametros.Add(new MySqlParameter("Ativo", Ativo));
+
+            DataSet ds = base.Consultar("VP_SP_InsProduto", parametros);
+            int id = 0;
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                int.TryParse(ds.Tables[0].Rows[0][0].ToString(), out id);
+            }
+            return id;
+        }
+
+        public string DesativarProduto()
+        {
+            List<MySqlParameter> parametros = new List<MySqlParameter>();
+
+            parametros.Add(new MySqlParameter("ID", Id));
+
+            DataSet ds = base.Consultar("VP_SP_DesativarProduto", parametros);
+            string mensagem = "";
+
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                mensagem = ds.Tables[0].Rows[0][0].ToString();
+            }
+            return mensagem;
+        }
 
         private List<Produto> Converter(DataSet ds)
         {

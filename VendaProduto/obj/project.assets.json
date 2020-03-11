@@ -1597,24 +1597,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\rafael.dias\\.nuget\\packages\\": {},
+    "C:\\Users\\guilherme.lribas\\.nuget\\packages\\": {},
     "C:\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Git\\VendaProduto\\VendaProduto\\VendaProduto.csproj",
+      "projectUniqueName": "C:\\Users\\guilherme.lribas\\Desktop\\Skafeina\\VendaProduto\\VendaProduto.csproj",
       "projectName": "VendaProduto",
-      "projectPath": "C:\\Git\\VendaProduto\\VendaProduto\\VendaProduto.csproj",
-      "packagesPath": "C:\\Users\\rafael.dias\\.nuget\\packages\\",
-      "outputPath": "C:\\Git\\VendaProduto\\VendaProduto\\obj\\",
+      "projectPath": "C:\\Users\\guilherme.lribas\\Desktop\\Skafeina\\VendaProduto\\VendaProduto.csproj",
+      "packagesPath": "C:\\Users\\guilherme.lribas\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\guilherme.lribas\\Desktop\\Skafeina\\VendaProduto\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\"
       ],
       "configFilePaths": [
-        "C:\\Users\\rafael.dias\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\guilherme.lribas\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
