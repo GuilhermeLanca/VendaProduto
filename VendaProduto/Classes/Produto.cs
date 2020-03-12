@@ -62,7 +62,7 @@ namespace VendaProduto.Classes
             List<Produto> produtosFiltro = new List<Produto>();
             try
             {
-                produtosFiltro = (from c in produtos where c.NomeProduto.ToUpper().Contains(texto.ToUpper()) || c.QtdEstocada.ToString().Contains(texto) select c).ToList();
+                produtosFiltro = (from p in produtos where p.NomeProduto.ToUpper().Contains(texto.ToUpper())select p).ToList();
                 return produtosFiltro;
             }
             catch (Exception)
