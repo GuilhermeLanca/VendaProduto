@@ -50,6 +50,27 @@ namespace VendaProduto.Activities
             AdaptadorProdutos adp = new AdaptadorProdutos(this, produtos);
             lstProdutos.Adapter = adp;
             lstProdutos.ItemClick += LstProdutos_ItemClick;
+            lstProdutos.ItemLongClick += LstProdutos_ItemLongClick;
+        }
+
+        private void LstProdutos_ItemLongClick(object sender, AdapterView.ItemLongClickEventArgs e)
+        {
+            //Criar um alerta perguntando ao usuário se realmente deseja excluir
+            Android.Support.V7.App.AlertDialog.Builder builder;
+            builder = new Android.Support.V7.App.AlertDialog.Builder(this);
+
+            builder.SetTitle("Atenção!");
+            builder.SetMessage("Deseja realmente excluir " + infoProduto[e.Position].NomeProduto + "?");
+            builder.SetIconAttribute(Android.Resource.Attribute.AlertDialogIcon);
+            builder.SetNegativeButton("Não", delegate { });
+            builder.SetPositiveButton("Sim", delegate
+            {
+                infoProduto.RemoveAt(e.Position);
+                AdaptadorProdutos adaptador = new AdaptadorProdutos(this, infoProduto);
+                lstProdutos.Adapter = adaptador;
+                Toast.MakeText(this, "Excluído", ToastLength.Short).Show();
+            });
+            builder.Show();
         }
 
         private void LstProdutos_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
