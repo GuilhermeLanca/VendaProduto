@@ -20,6 +20,9 @@ namespace VendaProduto.Activities
     {
         EditText edtNomeProdutoUp, edtPrecoUnitUp, edtQtdEstoqueUp;
         Button btnUpdate_up;
+
+        List<Produto> produtos = new Produto().BuscarTodosProdutos();
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -53,6 +56,15 @@ namespace VendaProduto.Activities
                 SetResult(Result.Ok, voltar);
                 Finish();
             };
+        }
+
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            if (requestCode == 13 && resultCode == Result.Ok && data != null)
+            {
+                produtos = JsonConvert.DeserializeObject<List<Produto>>(data.GetStringExtra("att_produto"));
+            }
+            base.OnActivityResult(requestCode, resultCode, data);
         }
     }
 }

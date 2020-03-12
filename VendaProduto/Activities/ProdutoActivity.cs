@@ -32,6 +32,8 @@ namespace VendaProduto.Activities
         ListView lstProdutos;
         List<Produto> infoProduto;
         List<Produto> produtos = new Produto().BuscarTodosProdutos();
+        List<Produto> produtosFiltro;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -47,6 +49,9 @@ namespace VendaProduto.Activities
             SetSupportActionBar(tlbProduto);
             SupportActionBar.Title = "Gerenciar Produtos";
 
+            //Cópia de produtos em produtosFiltro
+            produtosFiltro = produtos;
+
             AdaptadorProdutos adp = new AdaptadorProdutos(this, produtos);
             lstProdutos.Adapter = adp;
             lstProdutos.ItemClick += LstProdutos_ItemClick;
@@ -60,15 +65,18 @@ namespace VendaProduto.Activities
             builder = new Android.Support.V7.App.AlertDialog.Builder(this);
 
             builder.SetTitle("Atenção!");
-            builder.SetMessage("Deseja realmente excluir " + infoProduto[e.Position].NomeProduto + "?");
+            builder.SetMessage("Deseja realmente excluir " + produtosFiltro[e.Position].NomeProduto + "?");
             builder.SetIconAttribute(Android.Resource.Attribute.AlertDialogIcon);
             builder.SetNegativeButton("Não", delegate { });
             builder.SetPositiveButton("Sim", delegate
             {
-                infoProduto.RemoveAt(e.Position);
-                AdaptadorProdutos adaptador = new AdaptadorProdutos(this, infoProduto);
+                var match = produtos.Select((Value, Index) => new { Value, Index }).Single(p => p.Value.Id == produtosFiltro[e.Position].Id);
+                string mensagem = match.Value.DesativarProduto();
+                produtosFiltro.RemoveAt(e.Position);
+
+                AdaptadorProdutos adaptador = new AdaptadorProdutos(this, produtosFiltro);
                 lstProdutos.Adapter = adaptador;
-                Toast.MakeText(this, "Excluído", ToastLength.Short).Show();
+                Toast.MakeText(this, mensagem, ToastLength.Short).Show();
             });
             builder.Show();
         }
@@ -77,7 +85,16 @@ namespace VendaProduto.Activities
         {
             //Abrir a activity que vai atualizar os dados do produto tocado
             Intent telaUpdate = new Intent(this, typeof(UpdateProdutoActivity));
-            telaUpdate.PutExtra("att_produto", JsonConvert.SerializeObject(infoProduto[e.Position]));
+
+            if (produtosFiltro != null)
+            {
+                telaUpdate.PutExtra("att_produto", JsonConvert.SerializeObject(produtosFiltro[e.Position]));
+            }
+            else
+            {
+                telaUpdate.PutExtra("att_produto", JsonConvert.SerializeObject(produtos[e.Position]));
+            }
+
             StartActivityForResult(telaUpdate, 13);
         }
 
