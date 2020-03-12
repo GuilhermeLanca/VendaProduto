@@ -57,6 +57,21 @@ namespace VendaProduto.Classes
             return produtos;
         }
 
+        public static List<Produto> BuscarProduto(string texto, List<Produto> produtos)
+        {
+            List<Produto> produtosFiltro = new List<Produto>();
+            try
+            {
+                produtosFiltro = (from c in produtos where c.NomeProduto.ToUpper().Contains(texto.ToUpper()) || c.QtdEstocada.ToString().Contains(texto) select c).ToList();
+                return produtosFiltro;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public List<Produto> BuscarProdutosPedido(int idPedido)
         {
             List<MySqlParameter> parametros = new List<MySqlParameter>()

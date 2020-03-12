@@ -45,6 +45,8 @@ namespace VendaProduto.Activities
 
 
             infoProduto = JsonConvert.DeserializeObject<List<Produto>>(Intent.GetStringExtra("info"));
+            AdaptadorProdutos adaptador = new AdaptadorProdutos(this, infoProduto);
+            lstProdutos.Adapter = adaptador;
 
             SetSupportActionBar(tlbProduto);
             SupportActionBar.Title = "Gerenciar Produtos";
@@ -81,6 +83,7 @@ namespace VendaProduto.Activities
             builder.Show();
         }
 
+
         private void LstProdutos_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             //Abrir a activity que vai atualizar os dados do produto tocado
@@ -88,10 +91,13 @@ namespace VendaProduto.Activities
 
             if (produtosFiltro != null)
             {
+                telaUpdate.PutExtra("att_produto", JsonConvert.SerializeObject(produtosFiltro));
                 telaUpdate.PutExtra("att_produto", JsonConvert.SerializeObject(produtosFiltro[e.Position]));
+
             }
             else
             {
+                telaUpdate.PutExtra("att_produto", JsonConvert.SerializeObject(produtosFiltro));
                 telaUpdate.PutExtra("att_produto", JsonConvert.SerializeObject(produtos[e.Position]));
             }
 
@@ -101,11 +107,29 @@ namespace VendaProduto.Activities
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
             MenuInflater.Inflate(Resource.Menu.toolbar_produto, menu);
+
+            //Cria e configura o SearchView
+            IMenuItem item = menu.FindItem(Resource.Id.tlbItem_pesquisarProduto);
+            View searchView = item.ActionView as Android.Support.V7.Widget.SearchView;
+            Android.Support.V7.Widget.SearchView itemPesquisar;
+            itemPesquisar = searchView.JavaCast<Android.Support.V7.Widget.SearchView>();
+
+            //Método de evento que é executado a cada letra que digitamos ou apagamos
+            itemPesquisar.QueryTextChange += (s, e) =>
+            {
+                //Aqui iremos fazer a nossa busca!
+                List<Produto> filtroDeProdutos = Produto.BuscarProduto(e.NewText, infoProduto);
+                AdaptadorProdutos adaptador = new AdaptadorProdutos(this, filtroDeProdutos);
+                lstProdutos.Adapter = adaptador;
+            };
+
             return base.OnCreateOptionsMenu(menu);
+
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
+
             switch (item.ItemId)
             {
                 case Resource.Id.tlbItem_addProduto:
