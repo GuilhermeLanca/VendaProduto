@@ -49,7 +49,7 @@ namespace VendaProduto.Activities
         {
             Intent tlProdPed = new Intent(this, typeof(ProdutoPedidoActivity));
             tlProdPed.PutExtra("produtosPedido", JsonConvert.SerializeObject(pedidos[e.Position]));
-            StartActivity(tlProdPed);
+            StartActivityForResult(tlProdPed, 100);
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -80,7 +80,18 @@ namespace VendaProduto.Activities
         //TODO - O método OnActivityResult deverá ser criado para recarregar a lista de pedidos.
 
 
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            if (requestCode == 100 && resultCode == Result.Ok && data != null)
+            {
+                Pedido pedidoGerado = JsonConvert.DeserializeObject<Pedido>(data.GetStringExtra("pedidoGerado"));
 
+                pedidos.Add(pedidoGerado);
+
+                AdaptadorPedidos adp = new AdaptadorPedidos(this, pedidos);
+                lstPedidos.Adapter = adp;
+            }
+        }
 
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
